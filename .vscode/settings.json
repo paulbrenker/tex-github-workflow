@@ -1,0 +1,24 @@
+{
+  // LaTeX compiler output directory
+  "latex-workshop.latex.outDir": "out",
+  // open PDF preview in a tab
+  "latex-workshop.view.pdf.viewer": "tab",
+  // enable Docker for LaTeX compilation
+  "latex-workshop.docker.enabled": true,
+  // specify the Docker image to use
+  "latex-workshop.docker.image.latex": "ghcr.io/xu-cheng/texlive-full",
+  // using latexmk with pdflatex for compilation
+  "latex-workshop.latex.recipe.default": "latexmk (pdflatex)",
+  // disable compiler warnings here
+  "latex-workshop.message.latexlog.exclude": [],
+  // specify english as language for spellcheck
+  "ltex.language": "en-US",
+  "[latex]": {
+    // start build process when saving a file
+    "editor.formatOnSave": true,
+    // when editing LaTeX files break lines in code editor
+    "editor.wordWrap": "on",
+    // set tab size to 2 spaces in .tex files
+    "editor.tabSize": 2
+  }
+}

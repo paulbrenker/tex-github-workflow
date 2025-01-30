@@ -1,0 +1,8 @@
+{
+  "recommendations": [
+    // LaTeX typesetting with preview, compile
+    "james-yu.latex-workshop",
+    // offline grammar and spell checking
+    "valentjn.vscode-ltex"
+  ]
+}
