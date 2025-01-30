@@ -1,4 +1,6 @@
 {
+  // set tab size to 2 spaces in .tex files
+  "editor.tabSize": 2,
   // LaTeX compiler output directory
   "latex-workshop.latex.outDir": "out",
   // open PDF preview in a tab
@@ -17,8 +19,6 @@
     // start build process when saving a file
     "editor.formatOnSave": true,
     // when editing LaTeX files break lines in code editor
-    "editor.wordWrap": "on",
-    // set tab size to 2 spaces in .tex files
-    "editor.tabSize": 2
+    "editor.wordWrap": "on"
   }
 }
