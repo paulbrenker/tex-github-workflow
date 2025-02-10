@@ -4,6 +4,7 @@ on:
   pull_request:
     branches:
       - main
+
 jobs:
   build_latex:
     name: Build LaTex
@@ -12,14 +13,15 @@ jobs:
     permissions:
       pull-requests: read
     steps:
-      - name: Checkout Repository
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Get changed files
+      - name: Get changed tex files
         id: changed-files
         uses: tj-actions/changed-files@v45
         with:
           files: "./*.tex"
+          use_rest_api: "true"
 
       - name: List all changed files
         env:
