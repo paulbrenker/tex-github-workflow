@@ -12,9 +12,16 @@ jobs:
     outputs:
       files: ${{ steps.set_matrix.outputs.files }}
       names: ${{ steps.set_matrix.outputs.names }}
+      pr_commits: ${{ steps.pr_commits.outputs.PR_FETCH_DEPTH }}
     steps:
+      - name: "PR commits + 1"
+        id: pr_commits
+        run: echo "PR_FETCH_DEPTH=$(( ${{ github.event.pull_request.commits }} + 1 ))" >> "${GITHUB_ENV}"
+
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: ${{ steps.pr_commits.outputs.PR_FETCH_DEPTH }}
 
       - id: set_matrix
         name: Get Changed Tex Files

@@ -10,7 +10,6 @@ FILES=$(git diff --name-only --diff-filter=ACM origin/main -- "*.tex" | awk -F'/
 
 echo "Changed files are: $FILES"
 
-
 if [ -n "$GITHUB_OUTPUT" ]; then
     echo "files=$FILES" >> "$GITHUB_OUTPUT"
 fi
