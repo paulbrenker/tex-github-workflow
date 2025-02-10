@@ -8,6 +8,8 @@ fi
 
 CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 
+git fetch origin main
+
 BASE_BRANCH=$(git merge-base origin/main HEAD 2>/dev/null)
 if [ -z "$BASE_BRANCH" ]; then
     echo "Could not determine the base branch."
