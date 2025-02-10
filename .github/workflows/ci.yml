@@ -1,0 +1,60 @@
+name: Continuous Integration
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  changed_files:
+    name: Get changed files
+    timeout-minutes: 1
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: read
+      contents: read
+    outputs:
+      matrix: ${{ steps.changed_files.outputs.all_changed_files }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Get changed tex files
+        id: changed_files
+        uses: tj-actions/changed-files@v45
+        with:
+          files: "./*.tex"
+          use_rest_api: "true"
+          matrix: "true"
+
+  build_latex:
+    name: Build LaTeX
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    needs: changed_files
+    strategy:
+      matrix:
+        files: ${{ fromJson(needs.changed_files.outputs.matrix) }}
+    steps:
+      - name: Check Out
+        uses: actions/checkout@v4
+
+      - name: Compile LaTeX document
+        uses: xu-cheng/latex-action@v3
+        with:
+          root_file: ${{ matrix.files }}
+
+      - name: Convert Filename
+        id: convert_filename
+        run: |
+          tex_file="${{ matrix.files }}"
+          name_file="${tex_file%.tex}"
+          pdf_file="${name_file}.pdf"
+          echo "name_file=$name_file" >> $GITHUB_ENV
+          echo "pdf_file=$pdf_file" >> $GITHUB_ENV
+
+      - name: Upload PDF as Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.name_file }}
+          path: ${{ env.pdf_file }}
