@@ -6,17 +6,8 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-git fetch --depth=1 origin main
+FILES=$(git diff --name-only --diff-filter=ACM origin/main -- "*.tex" | awk -F'/' 'NF==1' | sort | uniq | sed 's/\.tex$//' | jq -R . | jq -s .)
 
-CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
-
-BASE_BRANCH=$(git merge-base origin/main HEAD 2>/dev/null)
-if [ -z "$BASE_BRANCH" ]; then
-    echo "Could not determine the base branch."
-    exit 1
-fi
-
-FILES=$(git diff --name-only --diff-filter=ACM $BASE_BRANCH -- "*.tex" | awk -F'/' 'NF==1' | sort | uniq | sed 's/\.tex$//' | jq -R . | jq -s .)
 echo "Changed files are: $FILES"
 
 
