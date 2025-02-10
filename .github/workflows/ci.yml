@@ -18,7 +18,7 @@ jobs:
 
       - id: set_matrix
         name: Get Changed Tex Files
-        run: ./scripts/get_changed_tex_files.sh
+        run: .github/scripts/get_changed_tex_files.sh
 
   build_latex:
     name: Build LaTeX
