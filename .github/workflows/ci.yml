@@ -63,7 +63,6 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
-            const { context, github } = require('@actions/github');
             const pdf_url = `https://github.com/${context.repo.owner}/${context.repo.repo}/suites/${context.runId}/artifacts/${context.runId}`;
             const comment_body = `
               <h3>Generated PDF</h3>
