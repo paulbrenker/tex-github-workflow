@@ -9,8 +9,8 @@
   "latex-workshop.docker.enabled": true,
   // specify the Docker image to use
   "latex-workshop.docker.image.latex": "ghcr.io/xu-cheng/texlive-full",
-  // using latexmk with pdflatex for compilation
-  "latex-workshop.latex.recipe.default": "latexmk (pdflatex)",
+  // using latexmk for compilation
+  "latex-workshop.latex.recipe.default": "latexmk",
   // disable compiler warnings here
   "latex-workshop.message.latexlog.exclude": [],
   // specify english as language for spellcheck
