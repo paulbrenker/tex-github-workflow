@@ -1,0 +1,45 @@
+name: Continuous Integration
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  set_matrix:
+    name: Set Matrix
+    runs-on: ubuntu-latest
+    timeout-minutes: 1
+    outputs:
+      files: ${{ steps.set_matrix.outputs.files }}
+      names: ${{ steps.set_matrix.outputs.names }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - id: set_matrix
+        name: Get Changed Tex Files
+        run: ./scripts/get_changed_tex_files.sh
+
+  build_latex:
+    name: Build LaTeX
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    needs:
+      - set_matrix
+    strategy:
+      matrix:
+        file: ${{ fromJson(needs.set_matrix.outputs.files) }}
+    steps:
+      - name: Check Out
+        uses: actions/checkout@v4
+
+      - name: Compile LaTeX document
+        uses: xu-cheng/latex-action@v3
+        with:
+          root_file: ${{ matrix.file }}.tex
+
+      - name: Upload PDF as Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.file }}
+          path: ${{ matrix.file }}.pdf
