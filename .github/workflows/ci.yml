@@ -2,46 +2,29 @@ name: Continuous Integration
 
 on:
   pull_request:
-  workflow_dispatch:
-
+    branches:
+      - main
 jobs:
-  set_matrix:
-    name: Set Matrix
-    runs-on: ubuntu-latest
-    timeout-minutes: 1
-    outputs:
-      files: ${{ steps.set_matrix.outputs.files }}
-      names: ${{ steps.set_matrix.outputs.names }}
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - id: set_matrix
-        name: Get Changed Tex Files
-        run: .github/scripts/get_changed_tex_files.sh
-
   build_latex:
-    name: Build LaTeX
+    name: Build LaTex
+    timeout-minutes: 10
     runs-on: ubuntu-latest
-    timeout-minutes: 6
-    needs:
-      - set_matrix
-    strategy:
-      matrix:
-        file: ${{ fromJson(needs.set_matrix.outputs.files) }}
+    permissions:
+      pull-requests: read
     steps:
-      - name: Check Out
+      - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Compile LaTeX document
-        uses: xu-cheng/latex-action@v3
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v45
         with:
-          root_file: ${{ matrix.file }}.tex
+          files: "./*.tex"
 
-      - name: Upload PDF as Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: ${{ matrix.file }}
-          path: ${{ matrix.file }}.pdf
+      - name: List all changed files
+        env:
+          ALL_CHANGED_FILES: ${{ steps.changed-files.outputs.all_changed_files }}
+        run: |
+          for file in ${ALL_CHANGED_FILES}; do
+            echo "$file was changed"
+          done
