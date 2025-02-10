@@ -25,6 +25,7 @@ jobs:
         with:
           files: "./*.tex"
           use_rest_api: "true"
+          matrix: "true"
 
       - name: List all changed files
         env:
