@@ -25,7 +25,6 @@ jobs:
         with:
           files: "./*.tex"
           use_rest_api: "true"
-          json: "true"
 
       - name: List all changed files
         env:
@@ -48,5 +47,4 @@ jobs:
       - name: Compile LaTeX document
         uses: xu-cheng/latex-action@v3
         with:
-          working_directory: tex/
           root_file: ${{ matrix.all_changed_files }}
