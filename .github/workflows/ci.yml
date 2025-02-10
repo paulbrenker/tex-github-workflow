@@ -44,12 +44,17 @@ jobs:
         with:
           root_file: ${{ matrix.files }}
 
-      - name: Write
+      - name: Convert Filename
         id: convert_filename
-        run: echo "pdf_file=${{ matrix.files }}%.tex " >> $GITHUB_ENV
+        run: |
+          tex_file="${{ matrix.files }}"
+          name_file="${tex_file%.tex}"
+          pdf_file="${name_file}.pdf"
+          echo "name_file=$name_file" >> $GITHUB_ENV
+          echo "pdf_file=$pdf_file" >> $GITHUB_ENV
 
       - name: Upload PDF as Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: PDF_${{ env.pdf_file }}
-          path: tex/${{ env.pdf_file }}
+          name: ${{ steps.convert_filename.outputs.name_file }}
+          path: ${{ steps.convert_filename.outputs.pdf_file }}
