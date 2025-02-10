@@ -58,3 +58,20 @@ jobs:
         with:
           name: ${{ env.name_file }}
           path: ${{ env.pdf_file }}
+
+      - name: Comment on Pull Request with PDF
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const { context, github } = require('@actions/github');
+            const pdf_url = `https://github.com/${context.repo.owner}/${context.repo.repo}/suites/${context.runId}/artifacts/${context.runId}`;
+            const comment_body = `
+              <h3>Generated PDF</h3>
+              <p>Here is the generated PDF for the changes in this pull request:</p>
+              <embed src="${pdf_url}" width="100%" height="400" type="application/pdf">
+            `;
+            github.rest.issues.createComment({
+              ...context.repo,
+              issue_number: context.issue.number,
+              body: comment_body
+            });
