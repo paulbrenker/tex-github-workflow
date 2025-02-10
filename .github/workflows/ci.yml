@@ -6,28 +6,49 @@ on:
       - main
 
 jobs:
-  build_latex:
-    name: Build LaTex
-    timeout-minutes: 10
+  changed_files:
+    name: Get changed files
+    timeout-minutes: 1
     runs-on: ubuntu-latest
     permissions:
       pull-requests: read
       contents: read
+    outputs:
+      all_changed_files: ${{ steps.changed_files.outputs.all_changed_files }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
       - name: Get changed tex files
-        id: changed-files
+        id: changed_files
         uses: tj-actions/changed-files@v45
         with:
           files: "./*.tex"
           use_rest_api: "true"
+          json: "true"
 
       - name: List all changed files
         env:
-          ALL_CHANGED_FILES: ${{ steps.changed-files.outputs.all_changed_files }}
+          ALL_CHANGED_FILES: ${{ steps.changed_files.outputs.all_changed_files }}
         run: |
           for file in ${ALL_CHANGED_FILES}; do
             echo "$file was changed"
           done
+
+  build_latex:
+    name: Build LaTeX
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    needs: changed_files
+    strategy:
+      matrix:
+        all_changed_files: ${{ fromJson(needs.changed_files.outputs.all_changed_files) }}
+    steps:
+      - name: Check Out
+        uses: actions/checkout@v4
+
+      - name: Compile LaTeX document
+        uses: xu-cheng/latex-action@v3
+        with:
+          working_directory: tex/
+          root_file: ${{ matrix.all_changed_files }}
