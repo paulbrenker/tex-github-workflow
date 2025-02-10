@@ -6,9 +6,9 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+git fetch --depth=1 origin main
 
-git fetch origin main
+CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 
 BASE_BRANCH=$(git merge-base origin/main HEAD 2>/dev/null)
 if [ -z "$BASE_BRANCH" ]; then
