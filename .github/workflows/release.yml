@@ -14,6 +14,9 @@ jobs:
     outputs:
       matrix: ${{ steps.fetch_tex_files.outputs.tex_files }}
     steps:
+      - name: Check Out
+        uses: actions/checkout@v4
+
       - name: Fetch .tex file names
         id: fetch_tex_files
         run: |
