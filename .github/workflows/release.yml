@@ -18,7 +18,7 @@ jobs:
         id: fetch_tex_files
         run: |
           tex_files=$(ls ./*.tex | jq -R . | jq -s .)
-          echo "tex_files=$tex_files" >> $GITHUB_ENV
+          echo "::set-output name=tex_files::$tex_files"
 
   build_latex:
     name: Build and Release LaTeX as PDF
