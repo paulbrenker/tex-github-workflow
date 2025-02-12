@@ -12,17 +12,10 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 1
     outputs:
-<<<<<<< HEAD
-      matrix: ${{ steps.convert_filename.outputs.tex_files }}
-    steps:
-      - name: Convert Filename
-        id: convert_filename
-=======
       matrix: ${{ steps.fetch_tex_files.outputs.tex_files }}
     steps:
-      - name: Convert Filename
+      - name: Fetch .tex file names
         id: fetch_tex_files
->>>>>>> 0cee8b1 (refactor variable names)
         run: |
           tex_files=$(ls ./*.tex | jq -R . | jq -s .)
           echo "tex_files=$tex_files" >> $GITHUB_ENV
