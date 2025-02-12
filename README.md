@@ -103,3 +103,11 @@ This workflow was created on the side of my bachelor thesis. I hope you find it 
 ### Further Extension of LaTeX build
 
 If you want to dynamically load images plots or diagrams into your LaTeX projects, and you might change the code or diagrams in the future consider building them inside the CI/CD Pipelines. A working example will be available in the branch `artifacts`.
+
+## Todo before publishing
+
+- [ ] Test for compatibility with multi file latex projects
+- [ ] Make a release pipeline
+- [ ] Make a preview file for Latex PDFs
+- [ ] Make table of contents for README
+- [ ] Recommend in README to shorten retention time for artifacts as not needed for long
