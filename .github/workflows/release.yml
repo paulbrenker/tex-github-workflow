@@ -20,7 +20,7 @@ jobs:
       - name: Fetch .tex file names
         id: fetch_tex_files
         run: |
-          tex_files=$(ls ./*.tex | tr '\n' ' ')
+          tex_files=$(ls *.tex | tr '\n' ' ')
           echo "tex_files=$tex_files" >> $GITHUB_OUTPUT
 
   build_latex:
