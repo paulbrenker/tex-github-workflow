@@ -20,7 +20,9 @@ jobs:
       - name: Fetch .tex file names
         id: fetch_tex_files
         run: |
-          tex_files=$(find . -maxdepth 1 -name "*.tex" | jq -R . | jq -s .)
+          tex_files=$(find . -maxdepth 1 -name "*.tex" -printf '"%f",')
+          tex_files="[${tex_files%,}]"
+          tex_files=$(echo "$tex_files" | jq -c .)
           echo "tex_files=$tex_files" >> $GITHUB_OUTPUT
 
   build_latex:
