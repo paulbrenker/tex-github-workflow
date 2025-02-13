@@ -62,8 +62,10 @@ jobs:
     runs-on: ubuntu-latest
     needs: build_latex
     permissions:
+      contents: read
       actions: read
     steps:
+      # TODO: check if this step is actually needed
       - name: Check Out
         uses: actions/checkout@v4
 
