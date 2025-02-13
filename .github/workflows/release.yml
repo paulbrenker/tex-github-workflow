@@ -61,6 +61,8 @@ jobs:
     name: Release all PDFs
     runs-on: ubuntu-latest
     needs: build_latex
+    permissions:
+      actions: read
     steps:
       - name: Check Out
         uses: actions/checkout@v4
@@ -70,6 +72,8 @@ jobs:
         run: |
           LATEST_TAG=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
             "https://api.github.com/repos/${{ github.repository }}/releases/latest" | jq -r .tag_name)
+
+          echo  "Last release tag: $LATEST_TAG"
 
           if [[ "$LATEST_TAG" == "null" || -z "$LATEST_TAG" ]]; then
             NEW_TAG="v0.0.0"
