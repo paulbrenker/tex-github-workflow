@@ -62,7 +62,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: build_latex
     permissions:
-      contents: read
+      contents: write
       actions: read
     steps:
       # TODO: check if this step is actually needed
