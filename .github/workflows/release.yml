@@ -106,18 +106,28 @@ jobs:
       - name: Download Artifacts from Current Run
         run: |
           mkdir -p artifacts
-          cat artifacts.json | jq -c '.[] | @base64' | while read -r i; do
-              _jq() {
-                  echo "${i}" | base64 --decode | jq -r "$1"
-              }
-              ID=$(_jq '.id')
-              NAME=$(_jq '.name')
-              echo "Downloading artifact: $NAME ($ID)"
-              curl -sL -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
-                  -H "Accept: application/vnd.github.v3+json" \
-                  "https://api.github.com/repos/${{ github.repository }}/actions/artifacts/${ID}/zip" \
-                  --output "artifacts/${NAME}.zip"
+
+          # Process each artifact in the array
+          jq -c '.[] | @base64' artifacts.json | while IFS= read -r i; do
+              # Skip empty lines
+              [[ -z "$i" ]] && continue
+
+              # Decode and parse artifact details
+              ID=$(echo "$i" | base64 --decode | jq -r '.id')
+              NAME=$(echo "$i" | base64 --decode | jq -r '.name')
+
+              # Validate the extracted variables
+              if [[ -n "$ID" && -n "$NAME" ]]; then
+                  echo "Downloading artifact: $NAME ($ID)"
+                  curl -sL -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+                      -H "Accept: application/vnd.github.v3+json" \
+                      "https://api.github.com/repos/${{ github.repository }}/actions/artifacts/${ID}/zip" \
+                      --output "artifacts/${NAME}.zip"
+              else
+                  echo "Skipping artifact with missing name or ID"
+              fi
           done
+
           ls -latr artifacts/
 
       - name: Extract Artifacts
