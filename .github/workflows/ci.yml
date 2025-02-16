@@ -75,7 +75,14 @@ jobs:
         run: |
           ARTIFACTS=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
             "https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/artifacts")
-          echo "artifact_urls=$(echo $ARTIFACTS | jq -r '.artifacts[] | [.name, .archive_download_url] | @tsv')" >> $GITHUB_ENV
+
+          echo "$ARTIFACTS" | jq '.'
+
+          artifact_urls=$(echo "$ARTIFACTS" | jq -r '[.artifacts[] | "\(.name)\t\(.archive_download_url)"] | join("\n")')
+
+          echo "artifact_urls<<EOF" >> $GITHUB_ENV
+          echo "$artifact_urls" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
 
       - name: Comment on Pull Request with PDF Links
         uses: actions/github-script@v6
