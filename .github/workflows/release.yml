@@ -108,6 +108,8 @@ jobs:
             _jq() { echo ${i} | base64 --decode | jq -r ${1}; }
             ID=$(_jq '.id')
             NAME=$(_jq '.name')
+            echo "ID: $ID"
+            echo "NAME: $NAME"
             echo "Downloading artifact: $NAME ($ID)"
             curl -sL -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
                  -H "Accept: application/vnd.github.v3+json" \
