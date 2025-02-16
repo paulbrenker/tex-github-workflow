@@ -65,10 +65,6 @@ jobs:
       contents: write
       actions: read
     steps:
-      # TODO: check if this step is actually needed
-      - name: Check Out
-        uses: actions/checkout@v4
-
       - name: Get Last Release Tag
         id: get_last_release
         run: |
@@ -91,7 +87,6 @@ jobs:
           fi
 
           echo "NEW_TAG=$NEW_TAG" >> $GITHUB_ENV
-          echo "Next release tag: $NEW_TAG"
 
       - name: Get Artifacts from Current Run
         run: |
@@ -99,9 +94,6 @@ jobs:
               -H "Accept: application/vnd.github.v3+json" \
               "https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/artifacts" \
               | jq '[.artifacts[] | {name, id}]' > artifacts.json
-
-          cat artifacts.json
-          ls -latr
 
       - name: Download Artifacts from Current Run
         run: |
@@ -126,15 +118,12 @@ jobs:
 
           done
 
-          ls -latr artifacts/
-
       - name: Extract Artifacts
         run: |
           mkdir -p extracted_artifacts
           for file in artifacts/*.zip; do
             unzip -o "$file" -d extracted_artifacts
           done
-          ls -latr extracted_artifacts/
 
       - name: List Extracted PDFs
         id: list_pdfs
