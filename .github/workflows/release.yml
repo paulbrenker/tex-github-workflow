@@ -138,7 +138,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: v.${{ env.NEW_TAG }}
-          name: "Release v.${{ env.NEW_TAG }}"
+          tag_name: ${{ env.NEW_TAG }}
+          name: "Release ${{ env.NEW_TAG }}"
           files: |
             ${{ env.pdf_files }}
