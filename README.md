@@ -131,3 +131,4 @@ This workflow was created on the side of my bachelor thesis. I hope you find it 
 - [ ] pages option to showcase current release and document it in advanced
 - [ ] Minor and Major Release on Pull Request Label
 - [ ] Comment to a PR always the newest Build Artifacts
+- [ ] Add release notes through pipeline
