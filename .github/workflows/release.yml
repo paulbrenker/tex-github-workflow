@@ -76,13 +76,12 @@ jobs:
           if [[ "$LATEST_TAG" == "null" || -z "$LATEST_TAG" ]]; then
             NEW_TAG="v0.0.0"
           else
-            # Extract version number and increment
             VERSION=$(echo "$LATEST_TAG" | sed -E 's/v([0-9]+)\.([0-9]+)\.([0-9]+)/\1 \2 \3/')
             MAJOR=$(echo $VERSION | cut -d' ' -f1)
             MINOR=$(echo $VERSION | cut -d' ' -f2)
             PATCH=$(echo $VERSION | cut -d' ' -f3)
 
-            PATCH=$((PATCH + 1))  # Increment patch version
+            PATCH=$((PATCH + 1))
             NEW_TAG="v$MAJOR.$MINOR.$PATCH"
           fi
 
