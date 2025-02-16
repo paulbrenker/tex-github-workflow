@@ -1,8 +1,8 @@
-# A Template to easlily manage your LaTeX projects with GitHub
+# A Template to easily manage your LaTeX projects with GitHub
 
 This repository is providing a template with project settings for VSCode and a GitHub Actions setup that makes collaborative development on LaTeX documents easy.
 
-> :bulb: Perfect for managing academic papers or a thesis. :-D
+> :bulb: Perfect for managing academic papers or a thesis.
 
 It features configurations for automatic builds in VSCode with a possible split screen view and builds on save. For every merge to the git main branch in the remote repository a release with PDF documents is provided in the release section of the GitHub repository.
 
@@ -45,7 +45,7 @@ Pull the latest version of the Tex-Live Docker Image to your local machine. This
 docker pull ghcr.io/xu-cheng/texlive-full:latest
 ```
 
-### MacOS (Apple Silicon)
+### macOS (Apple Silicon)
 
 ```bash
 docker pull --platform linux/amd64 ghcr.io/xu-cheng/texlive-full:latest
@@ -143,4 +143,3 @@ This workflow was created on the side of my bachelor thesis. I hope you find it 
 - [ ] Test for compatibility with multi file latex projects document this in improvements only ci
 - [ ] pages option to showcase current release and document it in advanced
 - [ ] Comment to a PR always the newest Build Artifacts
-- [ ] Add release notes through pipeline
