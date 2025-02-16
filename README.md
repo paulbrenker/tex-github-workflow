@@ -1,4 +1,4 @@
-# A Teamplate to easlily manage your LaTeX projects with GitHub
+# A Template to easlily manage your LaTeX projects with GitHub
 
 This repository is providing a template with project settings for VSCode and a GitHub Actions setup that makes collaborative development on LaTeX documents easy.
 
@@ -10,27 +10,20 @@ Using this template simplifies a long setup, and you can start writing LaTeX Cod
 
 ## Table of Contents
 
-1. [Prerequisites](#prerequisites)
-
-- [Windows](#windows)
-- [MacOs](#macos-apple-silicon)
-- [Linux](#linux)
-
-2. [Setup](#setup)
-
-- [Clone Repository](#clone-git-repository)
-- [Install Extensions](#installing-recommended-vscode-extensions)
-- [Create a LaTeX Project](#create-your-latex-project)
-
-3. [Usage](#usage)
-
-- [Make a Pull Request](#make-a-pull-request)
-- [Merge the first Pull Request](#merge-your-first-version-of-the-document)
-
-4. [Improvements](#improvements)
-
-- [Retention for Artifacts](#retention-time-for-action-artifacts)
-- [Pulling grafs and diagrams](#further-extension-of-latex-build)
+- [Prerequisites](#prerequisites)
+  - [Windows](#windows)
+  - [MacOs](#macos-apple-silicon)
+  - [Linux](#linux)
+- [Setup](#setup)
+  - [Clone Repository](#clone-git-repository)
+  - [Install Extensions](#installing-recommended-vscode-extensions)
+  - [Create a LaTeX Project](#create-your-latex-project)
+- [Usage](#usage)
+  - [Make a Pull Request](#make-a-pull-request)
+  - [Merge the first Pull Request](#merge-your-first-version-of-the-document)
+- [Improvements](#improvements)
+  - [Retention for Artifacts](#retention-time-for-action-artifacts)
+  - [Pulling grafs and diagrams](#further-extension-of-latex-build)
 
 ## Prerequisites
 
@@ -118,9 +111,9 @@ Open your GitHub Repository and create your first PR. To check that your changes
 
 After merging your PR a Release with the PDF of your Document is built and made available in the Release section. Your first release will have the version number v0.0.0. When you merge Pull Requests into your main branch the patch version counter will be auto incremented. If you want to release a major or minor version run the Release workflow manually with the input "minor" for a new minor release or "major" for a new major release.
 
-## Improvements
+## Advanced
 
-This workflow was created on the side of my bachelor thesis. I hope you find it useful. Please let me know your feedback at [paul.brenker@gmail.com](mailto:paul.brenker@gmail.com).
+Here are some optional features that help you to leverage collaboration and managing your repo optimally.
 
 ### Retention time for Action artifacts
 
@@ -130,10 +123,11 @@ GitHub Action artifacts consume storage in your GitHub "Storage for Actions and 
 
 If you want to dynamically load images plots or diagrams into your LaTeX projects, and you might change the code or diagrams in the future consider building them inside the CI/CD Pipelines. A working example will be available in the branch `artifacts`.
 
+This workflow was created on the side of my bachelor thesis. I hope you find it useful. Please let me know your feedback at [paul.brenker@gmail.com](mailto:paul.brenker@gmail.com).
+
 ## Todo before publishing
 
-- [ ] Test for compatibility with multi file latex projects document this in improvements
-- [ ] rename improvements to advances
+- [ ] Test for compatibility with multi file latex projects document this in improvements only ci
 - [ ] pages option to showcase current release and document it in advanced
 - [ ] Minor and Major Release on Pull Request Label
 - [ ] Comment to a PR always the newest Build Artifacts
