@@ -8,8 +8,8 @@ on:
     inputs:
       version_type:
         description: "Version type to increment (minor, major)"
-        required: false
-        default: "patch"
+        required: true
+        default: "minor"
 
 jobs:
   fetch_tex_files:
