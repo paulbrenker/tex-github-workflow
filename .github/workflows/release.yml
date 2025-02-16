@@ -114,7 +114,7 @@ jobs:
                  "https://api.github.com/repos/${{ github.repository }}/actions/artifacts/$ID/zip" \
                  --output artifacts/$NAME.zip
           done
-          ls -latr
+          ls -latr artifacts/
 
       - name: Extract Artifacts
         run: |
@@ -122,6 +122,7 @@ jobs:
           for file in artifacts/*.zip; do
             unzip -o "$file" -d extracted_artifacts
           done
+          ls -latr extracted_artifacts/
 
       - name: List Extracted PDFs
         id: list_pdfs
