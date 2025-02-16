@@ -65,6 +65,7 @@ jobs:
     needs: build_latex
     permissions:
       pull-requests: write
+      actions: read
       contents: read
     steps:
       - name: Checkout
