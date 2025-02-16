@@ -79,16 +79,27 @@ jobs:
 
       - name: Comment on Pull Request with PDF Links
         uses: actions/github-script@v6
+        env:
+          ARTIFACT_URLS: ${{ env.artifact_urls }}
         with:
           script: |
-            const { context, github } = require('@actions/github');
-            const artifactUrls = process.env.artifact_urls.split('\n').map(line => {
+            const artifactUrls = process.env.ARTIFACT_URLS.split('\n').map(line => {
               const [name, url] = line.split('\t');
-              return { name, url };
-            });
-            const commentBody = artifactUrls.map(artifact => `- [${artifact.name}](${artifact.url})`).join('\n');
-            github.rest.issues.createComment({
-              ...context.repo,
-              issue_number: context.issue.number,
-              body: `### Generated PDFs\n${commentBody}`
-            });
+              return { name: name?.trim(), url: url?.trim() };
+            }).filter(artifact => artifact.name && artifact.url);
+
+            const commentBody = artifactUrls
+              .map(artifact => `- [${artifact.name}](${artifact.url})`)
+              .join('\n');
+
+            if (commentBody) {
+              const issueNumber = context.payload.pull_request?.number || context.issue.number;
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issueNumber,
+                body: `### 🛠️ Generated PDFs\n${commentBody}`
+              });
+            } else {
+              console.log('No valid artifact URLs found.');
+            }
