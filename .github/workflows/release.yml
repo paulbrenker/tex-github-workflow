@@ -143,9 +143,13 @@ jobs:
           cat pdf_list.txt
           echo "pdf_files=$(cat pdf_list.txt | tr '\n' ' ')" >> $GITHUB_ENV
 
-      - name: Create GitHub Release with PDFs
-        uses: ncipollo/release-action@v1
+      - name: Create Release
+        id: create_release
+        uses: softprops/action-gh-release@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag: "v1.0.${{ github.run_number }}"
-          artifacts: ${{ env.pdf_files }}
-          token: ${{ secrets.GITHUB_TOKEN }}
+          tag_name: v.${{ env.NEW_TAG }}
+          name: "Release v.${{ env.NEW_TAG }}"
+          files: |
+            ${{ env.pdf_files }}
