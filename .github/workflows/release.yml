@@ -107,28 +107,23 @@ jobs:
         run: |
           mkdir -p artifacts
 
-          # Debug: Show raw base64 lines
-          echo "Base64-encoded artifacts:"
-          jq -c '.[] | @base64' artifacts.json | tee /dev/stderr
+          jq -c '.[]' artifacts.json | while IFS= read -r i; do
+              echo "Processing: $i"
+              ID=$(echo "$i" | jq -r '.id')
+              NAME=$(echo "$i" | jq -r '.name')
 
-          jq -c '.[] | @base64' artifacts.json | while IFS= read -r i; do
-              # Ensure line is non-empty and valid base64
-              if [[ -n "$i" ]] && echo "$i" | base64 --decode &>/dev/null; then
-                  ID=$(echo "$i" | base64 --decode | jq -r '.id')
-                  NAME=$(echo "$i" | base64 --decode | jq -r '.name')
+              echo "Decoded ID: '$ID', Name: '$NAME'"
 
-                  if [[ -n "$ID" && -n "$NAME" ]]; then
-                      echo "Downloading artifact: $NAME ($ID)"
-                      curl -sL -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
-                          -H "Accept: application/vnd.github.v3+json" \
-                          "https://api.github.com/repos/${{ github.repository }}/actions/artifacts/${ID}/zip" \
-                          --output "artifacts/${NAME}.zip"
-                  else
-                      echo "Skipping artifact with missing name or ID"
-                  fi
+              if [[ -n "$ID" && -n "$NAME" ]]; then
+                  echo "Downloading artifact: $NAME ($ID)"
+                  curl -sL -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+                      -H "Accept: application/vnd.github.v3+json" \
+                      "https://api.github.com/repos/${{ github.repository }}/actions/artifacts/${ID}/zip" \
+                      --output "artifacts/${NAME}.zip"
               else
-                  echo "Skipping invalid base64 line: '$i'"
+                  echo "Skipping artifact with missing name or ID"
               fi
+
           done
 
           ls -latr artifacts/
