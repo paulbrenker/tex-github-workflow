@@ -79,8 +79,6 @@ jobs:
         run: |
           PR_NUMBER=$(git log -1 --pretty=format:%s | grep -oP '#\d+' | tr -d '#')
           echo "PR_NUMBER=$PR_NUMBER" >> $GITHUB_ENV
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Get PR Labels
         if: env.PR_NUMBER != ''
@@ -92,14 +90,13 @@ jobs:
 
       - name: Determine Version PR Bump
         run: |
-          if echo "$PR_LABELS" | grep -q "major-version"; then
-            echo "VERSION_BUMP=major" >> $GITHUB_ENV
-          elif echo "$PR_LABELS" | grep -q "minor-version"; then
-            echo "VERSION_BUMP=minor" >> $GITHUB_ENV
+          if [[ "$PR_LABELS" == *"major-version"* ]]; then
+            echo "VERSION_BUMP=major" >> "$GITHUB_ENV"
+          elif [[ "$PR_LABELS" == *"minor-version"* ]]; then
+            echo "VERSION_BUMP=minor" >> "$GITHUB_ENV"
           else
-            echo "VERSION_BUMP=patch" >> $GITHUB_ENV
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            echo "VERSION_BUMP=patch" >> "$GITHUB_ENV"
+          fi
 
       - name: Get Last Release Tag
         id: get_last_release
