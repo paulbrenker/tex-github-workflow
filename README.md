@@ -1,4 +1,4 @@
-# An automated development environment for LaTeX projects
+# A Teamplate to easlily manage your LaTeX projects with GitHub
 
 This repository is providing a template with project settings for VSCode and a GitHub Actions setup that makes collaborative development on LaTeX documents easy.
 
@@ -132,6 +132,8 @@ If you want to dynamically load images plots or diagrams into your LaTeX project
 
 ## Todo before publishing
 
-- [ ] Test for compatibility with multi file latex projects
+- [ ] Test for compatibility with multi file latex projects document this in improvements
+- [ ] rename improvements to advances
+- [ ] pages option to showcase current release and document it in advanced
 - [ ] Minor and Major Release on Pull Request Label
-- [ ] Make a preview file for Latex PDFs
+- [ ] Comment to a PR always the newest Build Artifacts
