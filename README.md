@@ -10,6 +10,28 @@ Using this template simplifies a long setup, and you can start writing LaTeX Cod
 
 ## Table of Contents
 
+1. [Prerequisites](#prerequisites)
+
+- [Windows](#windows)
+- [MacOs](#macos-apple-silicon)
+- [Linux](#linux)
+
+2. [Setup](#setup)
+
+- [Clone Repository](#clone-git-repository)
+- [Install Extensions](#installing-recommended-vscode-extensions)
+- [Create a LaTeX Project](#create-your-latex-project)
+
+3. [Usage](#usage)
+
+- [Make a Pull Request](#make-a-pull-request)
+- [Merge the first Pull Request](#merge-your-first-version-of-the-document)
+
+4. [Improvements](#improvements)
+
+- [Retention for Artifacts](#retention-time-for-action-artifacts)
+- [Pulling grafs and diagrams](#further-extension-of-latex-build)
+
 ## Prerequisites
 
 This LaTeX setup uses VSCode and uses a Docker image to build the LaTeX PDFs. Make sure you install Docker Desktop and VSCode on your local machine:
@@ -94,11 +116,15 @@ Open your GitHub Repository and create your first PR. To check that your changes
 
 ### Merge your first Version of the Document
 
-After merging your PR a Release with the PDF of your Document is built and made available in the Release section.
+After merging your PR a Release with the PDF of your Document is built and made available in the Release section. Your first release will have the version number v0.0.0. When you merge Pull Requests into your main branch the patch version counter will be auto incremented. If you want to release a major or minor version run the Release workflow manually with the input "minor" for a new minor release or "major" for a new major release.
 
 ## Improvements
 
 This workflow was created on the side of my bachelor thesis. I hope you find it useful. Please let me know your feedback at [paul.brenker@gmail.com](mailto:paul.brenker@gmail.com).
+
+### Retention time for Action artifacts
+
+GitHub Action artifacts consume storage in your GitHub "Storage for Actions and Packages". In the repository settings under Actions>General you can shorten the default retention time for artifacts and logs from the default value of 90 days to suit your needs. This can help manage your used storage. The actions used in this repository use artifacts only to communicate between jobs in one workflow. This is why the retention time can be reduced to a minimum.
 
 ### Further Extension of LaTeX build
 
@@ -107,7 +133,5 @@ If you want to dynamically load images plots or diagrams into your LaTeX project
 ## Todo before publishing
 
 - [ ] Test for compatibility with multi file latex projects
-- [ ] Make a release pipeline
+- [ ] Minor and Major Release on Pull Request Label
 - [ ] Make a preview file for Latex PDFs
-- [ ] Make table of contents for README
-- [ ] Recommend in README to shorten retention time for artifacts as not needed for long
