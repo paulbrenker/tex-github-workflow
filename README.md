@@ -21,6 +21,9 @@ Using this template simplifies a long setup, and you can start writing LaTeX Cod
 - [Usage](#usage)
   - [Make a Pull Request](#make-a-pull-request)
   - [Merge the first Pull Request](#merge-your-first-version-of-the-document)
+  - [Releasing](#releasing)
+    - [PR Release](#pr-release)
+    - [Manual Release](#manual-release)
 - [Improvements](#improvements)
   - [Retention for Artifacts](#retention-time-for-action-artifacts)
   - [Pulling grafs and diagrams](#further-extension-of-latex-build)
@@ -109,7 +112,17 @@ Open your GitHub Repository and create your first PR. To check that your changes
 
 ### Merge your first Version of the Document
 
-After merging your PR a Release with the PDF of your Document is built and made available in the Release section. Your first release will have the version number v0.0.0. When you merge Pull Requests into your main branch the patch version counter will be auto incremented. If you want to release a major or minor version run the Release workflow manually with the input "minor" for a new minor release or "major" for a new major release.
+After merging your PR a Release with the PDF of your Document is built and made available in the Release section. Your first release will have the version number v0.0.0. When you merge Pull Requests into your main branch the patch version counter will be auto incremented.
+
+### Releasing
+
+#### PR Release
+
+When you merge a PR the version tag of the next release will always be incremented automatically. By default, the release is a patch e.g. `v0.1.2` -> `v0.1.3`. If you want to increase the minor or major version of your release you can do so by adding a label to your Pull Request. If you add the label `minor-version` to the PR the minor version will be incremented (`v0.1.3` -> `v0.2.0`). Adding the `major-version` label the major version number will be incremented.
+
+#### Manual Release
+
+If you want to increment the release version on the existing documents you can manually trigger the Release workflow in the Actions tab. For incrementing minor or major versions give the workflow_dispatch_bump input the needed values (`minor`, `major`).
 
 ## Advanced
 
@@ -129,6 +142,5 @@ This workflow was created on the side of my bachelor thesis. I hope you find it 
 
 - [ ] Test for compatibility with multi file latex projects document this in improvements only ci
 - [ ] pages option to showcase current release and document it in advanced
-- [ ] Minor and Major Release on Pull Request Label
 - [ ] Comment to a PR always the newest Build Artifacts
 - [ ] Add release notes through pipeline
