@@ -5,6 +5,11 @@ on:
     branches:
       - main
   workflow_dispatch:
+    inputs:
+      version_type:
+        description: "Version type to increment (minor, major)"
+        required: false
+        default: "patch"
 
 jobs:
   fetch_tex_files:
@@ -71,7 +76,7 @@ jobs:
           LATEST_TAG=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
             "https://api.github.com/repos/${{ github.repository }}/releases/latest" | jq -r .tag_name)
 
-          echo  "Last release tag: $LATEST_TAG"
+          echo "Last release tag: $LATEST_TAG"
 
           if [[ "$LATEST_TAG" == "null" || -z "$LATEST_TAG" ]]; then
             NEW_TAG="v0.0.0"
@@ -81,7 +86,19 @@ jobs:
             MINOR=$(echo $VERSION | cut -d' ' -f2)
             PATCH=$(echo $VERSION | cut -d' ' -f3)
 
-            PATCH=$((PATCH + 1))
+            VERSION_TYPE="${{ github.event.inputs.version_type || 'patch' }}"
+
+            if [[ "$VERSION_TYPE" == "major" ]]; then
+              MAJOR=$((MAJOR + 1))
+              MINOR=0
+              PATCH=0
+            elif [[ "$VERSION_TYPE" == "minor" ]]; then
+              MINOR=$((MINOR + 1))
+              PATCH=0
+            else
+              PATCH=$((PATCH + 1))
+            fi
+
             NEW_TAG="v$MAJOR.$MINOR.$PATCH"
           fi
 
