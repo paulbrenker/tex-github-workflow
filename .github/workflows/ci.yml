@@ -53,8 +53,91 @@ jobs:
           echo "name_file=$name_file" >> $GITHUB_ENV
           echo "pdf_file=$pdf_file" >> $GITHUB_ENV
 
-      - name: Upload PDF as Artifact
+      - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
           name: ${{ env.name_file }}
           path: ${{ env.pdf_file }}
+
+  comment_pr:
+    name: Comment on Pull Request with Artifact Links
+    runs-on: ubuntu-latest
+    needs: build_latex
+    permissions:
+      pull-requests: write
+      actions: read
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Get Artifact URLs
+        id: get_artifact_urls
+        run: |
+          ARTIFACTS=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            "https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/artifacts")
+
+          echo "$ARTIFACTS" | jq '.'
+
+          artifact_urls=$(echo "$ARTIFACTS" | jq -r '[.artifacts[] | "\(.name)\t\(.archive_download_url)"] | join("\n")')
+
+          echo "artifact_urls<<EOF" >> $GITHUB_ENV
+          echo "$artifact_urls" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+
+      - name: Comment Artifacts on PR
+        uses: actions/github-script@v6
+        env:
+          ARTIFACT_URLS: ${{ env.artifact_urls }}
+        with:
+          script: |
+            const artifactUrls = process.env.ARTIFACT_URLS.split('\n').map(line => {
+              const [name, url] = line.split('\t');
+              const artifactIdMatch = url.match(/artifacts\/(\d+)/);
+              const artifactId = artifactIdMatch ? artifactIdMatch[1] : null;
+              return { name: name?.trim(), artifactId };
+            }).filter(artifact => artifact.name && artifact.artifactId);
+
+            const runId = context.runId;
+            const repo = context.repo;
+
+            const commentBody = artifactUrls
+              .map(artifact => `- [${artifact.name}](https://github.com/${repo.owner}/${repo.repo}/actions/runs/${runId}/artifacts/${artifact.artifactId})`)
+              .join('\n');
+
+            if (!commentBody) {
+              console.log('No valid artifact URLs found.');
+              return;
+            }
+
+            const issueNumber = context.payload.pull_request?.number || context.issue.number;
+
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: repo.owner,
+              repo: repo.repo,
+              issue_number: issueNumber
+            });
+
+            const existingComment = comments.find(comment => comment.body.includes('### Documents affected by this PR'));
+
+            const updatedBody = `### Documents affected by this PR\n
+            Clicking a link will download a .zip archive containing the PDF\n
+            ${commentBody}`;
+
+            if (existingComment) {
+              await github.rest.issues.updateComment({
+                owner: repo.owner,
+                repo: repo.repo,
+                comment_id: existingComment.id,
+                body: updatedBody
+              });
+              console.log(`Updated existing comment: ${existingComment.id}`);
+            } else {
+              await github.rest.issues.createComment({
+                owner: repo.owner,
+                repo: repo.repo,
+                issue_number: issueNumber,
+                body: updatedBody
+              });
+              console.log('Created a new comment.');
+            }
