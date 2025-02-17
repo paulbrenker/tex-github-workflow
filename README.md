@@ -143,4 +143,6 @@ This workflow was created on the side of my bachelor thesis. I hope you find it 
 ## Todo before publishing
 
 - [ ] Test for compatibility with multi file latex projects document this in improvements only ci
+- [ ] drawio integration
+- [ ] write a blog post about this repo
 - [ ] pages option to showcase current release and document it in advanced
