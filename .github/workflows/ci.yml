@@ -102,7 +102,7 @@ jobs:
             const repo = context.repo;
 
             const commentBody = artifactUrls
-              .map(artifact => `- [${artifact.name}](https://href.li/?https://github.com/${repo.owner}/${repo.repo}/actions/runs/${runId}/artifacts/${artifact.artifactId})`)
+              .map(artifact => `- [${artifact.name}](https://github.com/${repo.owner}/${repo.repo}/actions/runs/${runId}/artifacts/${artifact.artifactId})`)
               .join('\n');
 
             if (!commentBody) {
