@@ -110,6 +110,8 @@ git push --set-upstream
 
 Open your GitHub Repository and create your first PR. To check that your changes were correct LaTeX code each document in the repository is build. If there are build failures the commit checks will fail.
 
+On every Pull Request a bot is automatically commenting links to .zip archives that contain the changed documents as PDF. This enables fast collaboration as reviewers don't have to check out the PR locally or have to download the artifacts from the Actions tab. The comment is updated with new links after every commit.
+
 ### Merge your first Version of the Document
 
 After merging your PR a Release with the PDF of your Document is built and made available in the Release section. Your first release will have the version number v0.0.0. When you merge Pull Requests into your main branch the patch version counter will be auto incremented.
@@ -142,4 +144,3 @@ This workflow was created on the side of my bachelor thesis. I hope you find it 
 
 - [ ] Test for compatibility with multi file latex projects document this in improvements only ci
 - [ ] pages option to showcase current release and document it in advanced
-- [ ] Comment to a PR always the newest Build Artifacts
