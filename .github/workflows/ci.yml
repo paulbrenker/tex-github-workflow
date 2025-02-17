@@ -92,20 +92,23 @@ jobs:
         with:
           script: |
             const artifactUrls = process.env.ARTIFACT_URLS.split('\n').map(line => {
-              const [name, id] = line.split('\t');
-              const url = `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${process.env.RUN_ID}/artifacts/${id}`;
-              return { name: name?.trim(), url: url?.trim() };
-            }).filter(artifact => artifact.name && artifact.url);
+              const [name, url] = line.split('\t');
+              const artifactIdMatch = url.match(/artifacts\/(\d+)/);
+              const artifactId = artifactIdMatch ? artifactIdMatch[1] : null;
+              return { name: name?.trim(), artifactId };
+            }).filter(artifact => artifact.name && artifact.artifactId);
 
+            const runId = context.runId;
+            const repo = context.repo;
             const commentBody = artifactUrls
-              .map(artifact => `- [${artifact.name}](${artifact.url})`)
+              .map(artifact => `- [${artifact.name}](https://github.com/${repo.owner}/${repo.repo}/actions/runs/${runId}/artifacts/${artifact.artifactId})`)
               .join('\n');
 
             if (commentBody) {
               const issueNumber = context.payload.pull_request?.number || context.issue.number;
               await github.rest.issues.createComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
+                owner: repo.owner,
+                repo: repo.repo,
                 issue_number: issueNumber,
                 body: `### Documents affected by this PR\n${commentBody}`
               });
