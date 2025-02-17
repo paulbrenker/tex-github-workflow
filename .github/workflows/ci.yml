@@ -85,7 +85,7 @@ jobs:
           echo "$artifact_urls" >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
 
-      - name: Comment on Pull Request with PDF Links
+      - name: Comment on Pull Request with PDF Links (Overwrite Previous)
         uses: actions/github-script@v6
         env:
           ARTIFACT_URLS: ${{ env.artifact_urls }}
@@ -100,18 +100,44 @@ jobs:
 
             const runId = context.runId;
             const repo = context.repo;
+
             const commentBody = artifactUrls
               .map(artifact => `- [${artifact.name}](https://github.com/${repo.owner}/${repo.repo}/actions/runs/${runId}/artifacts/${artifact.artifactId})`)
               .join('\n');
 
-            if (commentBody) {
-              const issueNumber = context.payload.pull_request?.number || context.issue.number;
+            if (!commentBody) {
+              console.log('No valid artifact URLs found.');
+              return;
+            }
+
+            const issueNumber = context.payload.pull_request?.number || context.issue.number;
+
+            // Fetch existing comments
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: repo.owner,
+              repo: repo.repo,
+              issue_number: issueNumber
+            });
+
+            // Look for a comment with our identifier
+            const existingComment = comments.find(comment => comment.body.includes('### Documents affected by this PR'));
+
+            const updatedBody = `### Documents affected by this PR\n${commentBody}`;
+
+            if (existingComment) {
+              await github.rest.issues.updateComment({
+                owner: repo.owner,
+                repo: repo.repo,
+                comment_id: existingComment.id,
+                body: updatedBody
+              });
+              console.log(`Updated existing comment: ${existingComment.id}`);
+            } else {
               await github.rest.issues.createComment({
                 owner: repo.owner,
                 repo: repo.repo,
                 issue_number: issueNumber,
-                body: `### Documents affected by this PR\n${commentBody}`
+                body: updatedBody
               });
-            } else {
-              console.log('No valid artifact URLs found.');
+              console.log('Created a new comment.');
             }
