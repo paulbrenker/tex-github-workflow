@@ -112,14 +112,12 @@ jobs:
 
             const issueNumber = context.payload.pull_request?.number || context.issue.number;
 
-            // Fetch existing comments
             const { data: comments } = await github.rest.issues.listComments({
               owner: repo.owner,
               repo: repo.repo,
               issue_number: issueNumber
             });
 
-            // Look for a comment with our identifier
             const existingComment = comments.find(comment => comment.body.includes('### Documents affected by this PR'));
 
             const updatedBody = `### Documents affected by this PR\n
