@@ -91,8 +91,10 @@ jobs:
           ARTIFACT_URLS: ${{ env.artifact_urls }}
         with:
           script: |
+            const { context, github } = require('@actions/github');
             const artifactUrls = process.env.ARTIFACT_URLS.split('\n').map(line => {
-              const [name, url] = line.split('\t');
+              const [name, id] = line.split('\t');
+              const url = `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${process.env.RUN_ID}/artifacts/${id}`;
               return { name: name?.trim(), url: url?.trim() };
             }).filter(artifact => artifact.name && artifact.url);
 
@@ -106,7 +108,7 @@ jobs:
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 issue_number: issueNumber,
-                body: `### 🛠️ Generated PDFs\n${commentBody}`
+                body: `### Documents affected by this PR\n${commentBody}`
               });
             } else {
               console.log('No valid artifact URLs found.');
