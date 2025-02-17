@@ -91,7 +91,6 @@ jobs:
           ARTIFACT_URLS: ${{ env.artifact_urls }}
         with:
           script: |
-            const { context, github } = require('@actions/github');
             const artifactUrls = process.env.ARTIFACT_URLS.split('\n').map(line => {
               const [name, id] = line.split('\t');
               const url = `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${process.env.RUN_ID}/artifacts/${id}`;
