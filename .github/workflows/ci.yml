@@ -13,6 +13,7 @@ jobs:
     permissions:
       pull-requests: read
       contents: read
+      actions: write
     outputs:
       matrix: ${{ steps.process_files.outputs.main_files }}
     steps:
