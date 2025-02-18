@@ -33,11 +33,6 @@ jobs:
           files='${{ steps.changed_files.outputs.all_changed_files }}'
           echo "Original files: $files"
 
-          if [[ -z "$files" ]]; then
-            echo "No files changed."
-            exit 0
-          fi
-
           main_files=()
           for file in ${files//,/ }; do
             base=$(echo "$file" | cut -d'/' -f1)
@@ -49,6 +44,12 @@ jobs:
 
           matrix=$(printf '%s\n' "${main_files[@]}" | jq -R . | jq -s .)
           echo "Main files: $matrix"
+
+          if [[ "$matrix" == "[]" ]]; then
+            echo "No files changed. Exiting successfully."
+            exit 0
+          fi
+
           echo "main_files=$matrix" >> "$GITHUB_ENV"
 
       - name: Set matrix output
