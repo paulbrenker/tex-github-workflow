@@ -42,6 +42,16 @@ jobs:
               main_files+=("$main_file")
             fi
           done
+
+
+          matrix=$(printf '%s\n' "${main_files[@]}" | jq -R . | jq -s 'map(select(. != ""))')
+          echo "Main files: $matrix"
+
+          if [[ "$matrix" == "[]" ]]; then
+            echo "No files changed. Exiting successfully."
+            exit 0
+          fi
+
           echo "Base Files unformatted: $main_files"
           matrix=$(printf '%s\n' ${main_files[@]} | jq -R . | jq -s .)
           echo "Affected base .tex files: $matrix"
