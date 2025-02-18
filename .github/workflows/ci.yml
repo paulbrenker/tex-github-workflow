@@ -36,7 +36,7 @@ jobs:
 
           main_files=()
           for file in $(echo "$files" | jq -r '.[]'); do
-            base=$(echo "$file" | cut -d'/' -f1)
+            base=$(echo "$file" | cut -d '.tex' -f1| cut -d'/' -f1)
             main_file="${base}.tex"
             if [[ ! " ${main_files[@]} " =~ " ${main_file} " ]]; then
               main_files+=("$main_file")
