@@ -13,8 +13,9 @@ jobs:
     permissions:
       pull-requests: read
       contents: read
+      actions: write
     outputs:
-      matrix: ${{ steps.changed_files.outputs.all_changed_files }}
+      matrix: ${{ steps.process_files.outputs.main_files }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -23,9 +24,38 @@ jobs:
         id: changed_files
         uses: tj-actions/changed-files@v45
         with:
-          files: "./*.tex"
+          files: ./**/*.tex
           use_rest_api: "true"
           matrix: "true"
+
+      - name: Process changed files to main files
+        id: process_files
+        run: |
+          files='${{ steps.changed_files.outputs.all_changed_files }}'
+          echo "All changed .tex files: $files"
+
+          main_files=()
+          for file in $(echo "$files" | jq -r '.[]'); do
+            base=$(echo "$file" | cut -d '.' -f1| cut -d'/' -f1)
+            main_file="${base}.tex"
+            if [[ ! " ${main_files[@]} " =~ " ${main_file} " ]]; then
+              main_files+=("$main_file")
+            fi
+          done
+
+          matrix=$(printf '%s\n' "${main_files[@]}" | jq -R . | jq -s 'map(select(. != ""))')
+
+          if [[ "$matrix" == "[]" ]]; then
+            echo "No files changed. Exiting successfully."
+            exit 0
+          fi
+
+          echo "Base Files unformatted: $main_files"
+          matrix=$(printf '%s\n' ${main_files[@]} | jq -R . | jq -s .)
+          echo "Affected base .tex files: $matrix"
+
+          sanitized_matrix=$(echo "$matrix" | jq -c .)
+          echo "main_files=$sanitized_matrix" >> $GITHUB_OUTPUT
 
   build_latex:
     name: Build LaTeX
