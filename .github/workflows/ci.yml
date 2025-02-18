@@ -55,7 +55,8 @@ jobs:
           matrix=$(printf '%s\n' ${main_files[@]} | jq -R . | jq -s .)
           echo "Affected base .tex files: $matrix"
 
-          echo "main_files=$matrix" >> "$GITHUB_ENV"
+          sanitized_matrix=$(echo "$matrix" | tr -d '[:space:]')
+          echo "main_files=$sanitized_matrix" >> "$GITHUB_ENV"
 
       - name: Set matrix output
         run: echo "main_files=${main_files}" >> $GITHUB_OUTPUT
