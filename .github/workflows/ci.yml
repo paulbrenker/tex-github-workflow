@@ -43,7 +43,6 @@ jobs:
             fi
           done
 
-
           matrix=$(printf '%s\n' "${main_files[@]}" | jq -R . | jq -s 'map(select(. != ""))')
 
           if [[ "$matrix" == "[]" ]]; then
@@ -55,7 +54,7 @@ jobs:
           matrix=$(printf '%s\n' ${main_files[@]} | jq -R . | jq -s .)
           echo "Affected base .tex files: $matrix"
 
-          sanitized_matrix=$(echo "$matrix" | tr -d '[:space:]')
+          sanitized_matrix=$(echo "$matrix" | jq -c .)
           echo "main_files=$sanitized_matrix" >> "$GITHUB_ENV"
 
       - name: Set matrix output
