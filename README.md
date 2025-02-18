@@ -24,8 +24,9 @@ Using this template simplifies a long setup, and you can start writing LaTeX Cod
   - [Releasing](#releasing)
     - [PR Release](#pr-release)
     - [Manual Release](#manual-release)
-- [Improvements](#improvements)
+- [Advanced](#advanced)
   - [Retention for Artifacts](#retention-time-for-action-artifacts)
+  - [LaTeX Projects with multiple files](#work-with-larger-projects)
   - [Pulling grafs and diagrams](#further-extension-of-latex-build)
 
 ## Prerequisites
@@ -134,6 +135,22 @@ Here are some optional features that help you to leverage collaboration and mana
 
 GitHub Action artifacts consume storage in your GitHub "Storage for Actions and Packages". In the repository settings under Actions>General you can shorten the default retention time for artifacts and logs from the default value of 90 days to suit your needs. This can help manage your used storage. The actions used in this repository use artifacts only to communicate between jobs in one workflow. This is why the retention time can be reduced to a minimum.
 
+### Work with larger Projects
+
+If you are managing multiple files in one repository or your project consists of multiple LaTeX files this is possible with this setup. Your file structure has to be the following:
+
+```
+document_1.tex
+document_1/file_1.tex
+document_1/file_2.tex
+...
+document_2.tex
+document_2/file_1.tex
+document_2/file_2.tex
+```
+
+The Pull Request Integration job compiles the matching documents only when you change `.tex` files in your current PR. Multiple Documents will be compiled in parallel to save time and resources.
+
 ### Further Extension of LaTeX build
 
 If you want to dynamically load images plots or diagrams into your LaTeX projects, and you might change the code or diagrams in the future consider building them inside the CI/CD Pipelines. A working example will be available in the branch `artifacts`.
@@ -142,7 +159,5 @@ This workflow was created on the side of my bachelor thesis. I hope you find it 
 
 ## Todo before publishing
 
-- [ ] Test for compatibility with multi file latex projects document this in improvements only ci
-- [ ] drawio integration
 - [ ] write a blog post about this repo
 - [ ] pages option to showcase current release and document it in advanced
