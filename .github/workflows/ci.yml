@@ -31,24 +31,19 @@ jobs:
         id: process_files
         run: |
           files='${{ steps.changed_files.outputs.all_changed_files }}'
-          echo "Original files: $files"
+          echo "All changed .tex files: $files"
 
           main_files=()
-          for file in ${files//,/ }; do
+          for file in $(echo "$files" | jq -r '.[]'); do
             base=$(echo "$file" | cut -d'/' -f1)
             main_file="${base}.tex"
             if [[ ! " ${main_files[@]} " =~ " ${main_file} " ]]; then
               main_files+=("$main_file")
             fi
           done
-
-          matrix=$(printf '%s\n' "${main_files[@]}" | jq -R . | jq -s .)
-          echo "Main files: $matrix"
-
-          if [[ "$matrix" == "[]" || "$matrix" == "[\"\"]" ]]; then
-            echo "No files changed. Exiting successfully."
-            exit 0
-          fi
+          echo "Base Files unformatted: $main_files"
+          matrix=$(printf '%s\n' ${main_files[@]} | jq -R . | jq -s .)
+          echo "Affected base .tex files: $matrix"
 
           echo "main_files=$matrix" >> "$GITHUB_ENV"
 
