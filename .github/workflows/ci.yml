@@ -45,7 +45,7 @@ jobs:
           matrix=$(printf '%s\n' "${main_files[@]}" | jq -R . | jq -s .)
           echo "Main files: $matrix"
 
-          if [[ "$matrix" == "[]" ]]; then
+          if [[ "$matrix" == "[]" || "$matrix" == "[\"\"]" ]]; then
             echo "No files changed. Exiting successfully."
             exit 0
           fi
