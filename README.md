@@ -140,13 +140,18 @@ GitHub Action artifacts consume storage in your GitHub "Storage for Actions and 
 If you are managing multiple files in one repository or your project consists of multiple LaTeX files this is possible with this setup. Your file structure has to be the following:
 
 ```
-document_1.tex
-document_1/file_1.tex
-document_1/file_2.tex
-...
-document_2.tex
-document_2/file_1.tex
-document_2/file_2.tex
+project
+│   document_1.tex
+└───document_1
+│   │   file_1.tex
+│   │   file_2.tex
+│   │   ...
+│
+│   document_2.tex
+└───document_2
+│   │   file_1.tex
+│   │   file_2.tex
+│   │   ...
 ```
 
 The Pull Request Integration job compiles the matching documents only when you change `.tex` files in your current PR. Multiple Documents will be compiled in parallel to save time and resources.
