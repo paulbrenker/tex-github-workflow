@@ -186,3 +186,41 @@ jobs:
           name: "Release ${{ env.NEW_TAG }}"
           files: |
             ${{ env.pdf_files }}
+
+  build_pages:
+    needs: release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Ruby and Jekyll
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.1"
+
+      - name: Install Jekyll and dependencies
+        run: |
+          cd .github/pages
+          bundle install
+
+      - name: Build Jekyll site
+        run: |
+          cd .github/pages
+          bundle exec jekyll build -d ../../_site
+
+      - name: Deploy to GitHub Pages
+        uses: actions/upload-pages-artifact@v2
+        with:
+          path: _site
+
+  deploy_pages:
+    needs: build_pages
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+
+    steps:
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v2
