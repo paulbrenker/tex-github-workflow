@@ -188,6 +188,7 @@ jobs:
             ${{ env.pdf_files }}
 
   build_pages:
+    name: Build Pages
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -209,24 +210,29 @@ jobs:
           cd .github/pages
           bundle install
 
-      - name: Build Jekyll site
-        env:
-          JEKYLL_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build with Jekyll
         run: |
           cd .github/pages
-          bundle exec jekyll build -d ../../_site
+          bundle exec jekyll build --baseurl "${{ steps.pages.outputs.base_path }}"
+        env:
+          JEKYLL_ENV: production
 
       - name: Deploy to GitHub Pages
         uses: actions/upload-pages-artifact@v3
         with:
-          path: _site
+          path: .github/pages/_site
 
   deploy_pages:
+    name: Deploy Pages
     needs: build_pages
     runs-on: ubuntu-latest
     permissions:
       pages: write
       id-token: write
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
       - name: Deploy to GitHub Pages
