@@ -204,6 +204,8 @@ jobs:
           bundle install
 
       - name: Build Jekyll site
+        env:
+          JEKYLL_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           cd .github/pages
           bundle exec jekyll build -d ../../_site
