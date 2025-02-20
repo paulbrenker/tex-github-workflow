@@ -52,7 +52,7 @@
 
                     const pdfElement = `
                         <div class="pdf-viewer">
-                            <h2>${pdf.replace(".pdf", "")}</h4>
+                            <h2>${pdf.replace(".pdf", "").charAt(0).toUpperCase() + String(val).slice(1)}</h2>
                             <object data="${pdfUrl}" type="application/pdf">
                                 <embed src="${pdfUrl}">
                                     <p>This browser does not support PDFs.
