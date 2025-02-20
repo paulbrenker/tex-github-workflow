@@ -1,7 +1,4 @@
-remote_theme: pages-themes/cayman@v0.2.0
 theme: jekyll-theme-cayman
-plugins:
-  - jekyll-remote-theme
 
 title: Document Preview Page
 description: A simple page to preview documents
