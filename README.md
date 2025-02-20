@@ -156,13 +156,12 @@ project
 
 The Pull Request Integration job compiles the matching documents only when you change `.tex` files in your current PR. Multiple Documents will be compiled in parallel to save time and resources.
 
+### Showcase your Documents in a static website
+
+This repo has a built-in GitHub Pages site. All required code is in the directory `.github/pages/`. To enable it go to the repository settings set the source to GitHub Actions. The release workflow will now deploy the site to `http(s)://<username>.github.io/<repository>`. This is a static site that uses simple embedded JavaScript to get the latest release from your repository and showcases all the PDFs. Be aware that this only works when your repository is public.
+
 ### Further Extension of LaTeX build
 
 If you want to dynamically load images plots or diagrams into your LaTeX projects, and you might change the code or diagrams in the future consider building them inside the CI/CD Pipelines. A working example will be available in the branch `artifacts`.
 
 This workflow was created on the side of my bachelor thesis. I hope you find it useful. Please let me know your feedback at [paul.brenker@gmail.com](mailto:paul.brenker@gmail.com).
-
-## Todo before publishing
-
-- [ ] write a blog post about this repo
-- [ ] pages option to showcase current release and document it in advanced
