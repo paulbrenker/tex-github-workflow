@@ -188,7 +188,6 @@ jobs:
             ${{ env.pdf_files }}
 
   build_pages:
-    needs: release
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -210,7 +209,7 @@ jobs:
           bundle exec jekyll build -d ../../_site
 
       - name: Deploy to GitHub Pages
-        uses: actions/upload-pages-artifact@v2
+        uses: actions/upload-pages-artifact@v3
         with:
           path: _site
 
