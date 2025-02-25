@@ -27,7 +27,8 @@ Using this template simplifies a long setup, and you can start writing LaTeX Cod
 - [Advanced](#advanced)
   - [Retention for Artifacts](#retention-time-for-action-artifacts)
   - [LaTeX Projects with multiple files](#work-with-larger-projects)
-  - [Pulling grafs and diagrams](#further-extension-of-latex-build)
+  - [Preview in a static website](#showcase-your-documents-in-a-static-website)
+  - [Pulling graphs and diagrams](#further-extension-of-latex-build)
 
 ## Prerequisites
 
