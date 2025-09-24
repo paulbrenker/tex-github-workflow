@@ -116,7 +116,7 @@ jobs:
           echo "EOF" >> $GITHUB_ENV
 
       - name: Comment Artifacts on PR
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         env:
           ARTIFACT_URLS: ${{ env.artifact_urls }}
         with:
