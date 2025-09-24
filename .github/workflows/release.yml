@@ -220,7 +220,7 @@ jobs:
           PAGES_REPO_NWO: ${{ github.repository }}
 
       - name: Deploy to GitHub Pages
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v4
         with:
           path: .github/pages/_site
 
