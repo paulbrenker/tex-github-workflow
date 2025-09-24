@@ -20,7 +20,7 @@ jobs:
       matrix: ${{ steps.fetch_tex_files.outputs.tex_files }}
     steps:
       - name: Check Out
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Fetch .tex file names
         id: fetch_tex_files
@@ -40,7 +40,7 @@ jobs:
         files: ${{ fromJson(needs.fetch_tex_files.outputs.matrix) }}
     steps:
       - name: Check Out
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Compile LaTeX document
         uses: xu-cheng/latex-action@v3
@@ -73,7 +73,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Get PR Number
         run: |
@@ -192,7 +192,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Setup Ruby
         uses: ruby/setup-ruby@cf7216d52fba1017929b4d7162fabe2b30af5b49
