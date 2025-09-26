@@ -3,6 +3,6 @@
     // LaTeX typesetting with preview, compile
     "james-yu.latex-workshop",
     // offline grammar and spell checking
-    "valentjn.vscode-ltex"
+    "ltex-plus.vscode-ltex-plus"
   ]
 }
