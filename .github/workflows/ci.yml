@@ -22,7 +22,7 @@ jobs:
 
       - name: Get changed tex files
         id: changed_files
-        uses: tj-actions/changed-files@v46
+        uses: tj-actions/changed-files@v47
         with:
           files: ./**/*.tex
           use_rest_api: "true"
